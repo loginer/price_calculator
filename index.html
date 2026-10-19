@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Цена">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1f3a34">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Цена для клиента</title>
+<style>
+:root{--bg:#f3efe4;--ink:#1c2b27;--muted:#6b756f;--card:#fffdf7;--line:#d8d1bd;--accent:#1f3a34;--ok:#1f3a34;--err:#9b2c2c}
+@media (prefers-color-scheme:dark){:root{--bg:#16211e;--ink:#eee9da;--muted:#9aa49e;--card:#1f2d29;--line:#33443f;--accent:#e4d9b4;--ok:#e4d9b4;--err:#f0a0a0}}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,"SF Pro Text","Segoe UI",Roboto,Arial,sans-serif}
+body{padding:calc(env(safe-area-inset-top,0px) + 28px) 20px calc(env(safe-area-inset-bottom,0px) + 28px);max-width:480px;margin:0 auto}
+h1{font-size:26px;margin:0 0 24px;letter-spacing:-.01em}
+label{display:block;margin:18px 0 8px;font-size:15px;color:var(--muted)}
+input{width:100%;padding:14px 16px;font-size:20px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;outline:none;-webkit-appearance:none}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.result{margin-top:28px;padding:22px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);text-align:center}
+.result small{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
+.result b{display:block;font-size:38px;font-variant-numeric:tabular-nums;color:var(--ok)}
+.result.hint b{font-size:17px;font-weight:400;color:var(--muted)}
+.result.error b{font-size:17px;font-weight:500;color:var(--err)}
+.formula{margin-top:14px;text-align:center;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<h1>Цена для клиента</h1>
+<label for="price">Цена товара</label>
+<input id="price" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+<label for="markup">Наценка (сколько добавить)</label>
+<input id="markup" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+<div id="result" class="result hint"><small>Итого с НДС</small><b>Введите цену и наценку</b></div>
+<div class="formula">(Цена + Наценка) × 1,18 — НДС 18%</div>
+<script>
+const VAT=1.18,$=id=>document.getElementById(id);
+const price=$('price'),markup=$('markup'),box=$('result');
+function parse(v){const n=v.trim().replace(/\s/g,'').replace(',','.');return /^\d+(\.\d+)?$/.test(n)?parseFloat(n):null}
+function clean(i){let v=i.value.replace(/[^\d.,]/g,'');const k=v.search(/[.,]/);if(k!==-1)v=v.slice(0,k+1)+v.slice(k+1).replace(/[.,]/g,'');if(v!==i.value)i.value=v}
+function show(t,c){box.className='result'+(c?' '+c:'');box.querySelector('b').textContent=t}
+function calc(){
+  if(!price.value.trim()||!markup.value.trim())return show('Введите цену и наценку','hint');
+  const p=parse(price.value),m=parse(markup.value);
+  if(p===null||m===null)return show('Введите корректные числа','error');
+  show(((p+m)*VAT).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}),'');
+}
+[price,markup].forEach(i=>i.addEventListener('input',()=>{clean(i);calc()}));
+</script>
+</body>
+</html>
