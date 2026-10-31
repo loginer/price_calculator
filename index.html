@@ -22,7 +22,9 @@ input{width:100%;padding:14px 16px;font-size:20px;color:var(--ink);background:va
 input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
 .markup-control{display:flex;gap:6px;align-items:stretch}
 .markup-control input{min-width:0;flex:1;padding:14px 8px;text-align:center}
-.markup-control button{flex:0 0 48px;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:14px;cursor:pointer}
+.markup-control button{flex:0 0 48px;padding:0;border:1px solid transparent;border-radius:10px;background:var(--accent);color:var(--card);font-size:14px;font-weight:600;box-shadow:0 2px 0 var(--line);cursor:pointer;transition:opacity .15s,transform .15s,box-shadow .15s}
+.markup-control button:hover{opacity:.85}
+.markup-control button:active{transform:translateY(2px);box-shadow:none}
 .markup-control button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .result{margin-top:28px;padding:22px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);text-align:center}
 .result small{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
