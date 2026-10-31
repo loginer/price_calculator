@@ -20,6 +20,10 @@ h1{font-size:26px;margin:0 0 24px;letter-spacing:-.01em}
 label{display:block;margin:18px 0 8px;font-size:15px;color:var(--muted)}
 input{width:100%;padding:14px 16px;font-size:20px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;outline:none;-webkit-appearance:none}
 input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.markup-control{display:flex;gap:6px;align-items:stretch}
+.markup-control input{min-width:0;flex:1;padding:14px 8px;text-align:center}
+.markup-control button{flex:0 0 48px;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:14px;cursor:pointer}
+.markup-control button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .result{margin-top:28px;padding:22px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);text-align:center}
 .result small{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
 .result b{display:block;font-size:38px;font-variant-numeric:tabular-nums;color:var(--ok)}
@@ -33,7 +37,13 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,va
 <label for="price">Цена товара</label>
 <input id="price" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
 <label for="markup">Наценка (сколько добавить)</label>
-<input id="markup" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+<div class="markup-control">
+<button type="button" data-step="-100" aria-label="Уменьшить наценку на 100">−100</button>
+<button type="button" data-step="-10" aria-label="Уменьшить наценку на 10">−10</button>
+<input id="markup" type="text" inputmode="decimal" value="260" autocomplete="off">
+<button type="button" data-step="10" aria-label="Увеличить наценку на 10">+10</button>
+<button type="button" data-step="100" aria-label="Увеличить наценку на 100">+100</button>
+</div>
 <div id="result" class="result hint"><small>Итого с НДС</small><b>Введите цену и наценку</b></div>
 <div class="formula">(Цена + Наценка) × 1,18 — НДС 18%</div>
 <script>
@@ -49,6 +59,11 @@ function calc(){
   show(((p+m)*VAT).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}),'');
 }
 [price,markup].forEach(i=>i.addEventListener('input',()=>{clean(i);calc()}));
+document.querySelectorAll('[data-step]').forEach(button=>button.addEventListener('click',()=>{
+  const next=Math.max(0,(parse(markup.value)??0)+Number(button.dataset.step));
+  markup.value=String(Number(next.toFixed(10))).replace('.',',');
+  calc();
+}));
 </script>
 </body>
 </html>
