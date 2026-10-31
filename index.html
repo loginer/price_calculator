@@ -40,11 +40,11 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,va
 <input id="price" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
 <label for="markup">Наценка (сколько добавить)</label>
 <div class="markup-control">
-<button type="button" data-step="-100" aria-label="Уменьшить наценку на 100">−100</button>
+<button type="button" data-step="-50" aria-label="Уменьшить наценку на 50">−50</button>
 <button type="button" data-step="-10" aria-label="Уменьшить наценку на 10">−10</button>
 <input id="markup" type="text" inputmode="decimal" value="260" autocomplete="off">
 <button type="button" data-step="10" aria-label="Увеличить наценку на 10">+10</button>
-<button type="button" data-step="100" aria-label="Увеличить наценку на 100">+100</button>
+<button type="button" data-step="50" aria-label="Увеличить наценку на 50">+50</button>
 </div>
 <div id="result" class="result hint"><small>Итого с НДС</small><b>Введите цену и наценку</b></div>
 <div class="formula">(Цена + Наценка) × 1,18 — НДС 18%</div>
